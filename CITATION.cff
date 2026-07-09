@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: "Fractal Analysis Automation for ImageJ"
+message: "If you use this software in your research, please cite this repository."
+type: software
+
+authors:
+  - family-names: "Oztoprak"
+    given-names: "Mehmet Ihsan"
+
+repository-code: "https://github.com/ihsanoztoprak139-creator/fractal-analysis-automation-ImageJ"
+
+license: MIT
+
+version: 1.0.0
+
+date-released: 2026-07-09
