@@ -42,7 +42,7 @@ The macro can be adapted for different image-based research applications, includ
 - Quantitative morphology assessment
 - Export of processed images and analysis results
 
-![Workflow](images/workflow.png)
+
 
 ---
 
@@ -100,39 +100,7 @@ macro/fractal_analysis_automation.ijm
 
 ## General Workflow
 
-Input Image
-
-↓
-
-ROI Selection
-
-↓
-
-Preprocessing
-
-↓
-
-Background Subtraction
-
-↓
-
-Thresholding
-
-↓
-
-Binary Conversion
-
-↓
-
-Skeletonization
-
-↓
-
-Fractal Dimension Analysis
-
-↓
-
-Export Results
+![Workflow](images/workflow.png)
 
 ---
 
