@@ -42,6 +42,8 @@ The macro can be adapted for different image-based research applications, includ
 - Quantitative morphology assessment
 - Export of processed images and analysis results
 
+![Workflow](images/workflow.png)
+
 ---
 
 ## Repository Structure
