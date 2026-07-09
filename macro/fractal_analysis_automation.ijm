@@ -1,4 +1,22 @@
-
+//====================================================================
+//
+// Fractal Analysis Automation for ImageJ
+//
+// Version : 1.0.0
+//
+// Developed by
+// Mehmet Ihsan Oztoprak
+// Department of Bioengineering
+// Marmara University
+//
+// Description:
+//
+// Fully automated ImageJ macro for fractal dimension analysis
+// and quantitative image preprocessing.
+//
+// Copyright (c) 2026 Mehmet Ihsan Oztoprak
+//
+//====================================================================
 
 // --- AYARLAR ---
 var sigma_degeri = 4;
