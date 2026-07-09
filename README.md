@@ -69,7 +69,7 @@ fractal-analysis-automation-ImageJ
 ├── CONTRIBUTING.md
 ├── README.md
 └── LICENSE
-
+```
 ---
 
 ## Requirements
@@ -96,7 +96,6 @@ macro/fractal_analysis_automation.ijm
 
 ---
 
-![Workflow](images/workflow.png)
 
 
 ## General Workflow
