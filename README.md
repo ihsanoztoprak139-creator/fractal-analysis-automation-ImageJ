@@ -94,6 +94,9 @@ macro/fractal_analysis_automation.ijm
 
 ---
 
+![Workflow](images/workflow.png)
+
+
 ## General Workflow
 
 Input Image
