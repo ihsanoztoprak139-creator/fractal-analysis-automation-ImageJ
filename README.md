@@ -50,3 +50,94 @@ fractal-analysis-automation-ImageJ
 │
 ├── README.md
 └── LICENSE
+
+---
+
+## Requirements
+
+- Fiji / ImageJ (recommended)
+- ImageJ Macro Language
+- Analyze Skeleton plugin (if required)
+
+---
+
+## Installation
+
+1. Clone or download this repository.
+2. Open Fiji/ImageJ.
+3. Navigate to:
+
+Plugins → Macros → Run...
+
+4. Select:
+
+macro/fractal_analysis_automation.ijm
+
+5. Execute the macro.
+
+---
+
+## General Workflow
+
+Input Image
+
+↓
+
+ROI Selection
+
+↓
+
+Preprocessing
+
+↓
+
+Background Subtraction
+
+↓
+
+Thresholding
+
+↓
+
+Binary Conversion
+
+↓
+
+Skeletonization
+
+↓
+
+Fractal Dimension Analysis
+
+↓
+
+Export Results
+
+---
+
+## Applications
+
+This workflow can be adapted for:
+
+- Dental radiographs
+- Trabecular bone analysis
+- Histological images
+- Microscopy
+- Material science
+- Biological image analysis
+
+---
+
+## Author
+
+**Mehmet Ihsan Oztoprak**
+
+Department of Bioengineering
+
+Marmara University
+
+---
+
+## License
+
+MIT License
