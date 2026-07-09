@@ -1,24 +1,37 @@
-# fractal-analysis-automation-ImageJ
+# Fractal Analysis Automation for ImageJ
 
-An automated ImageJ macro for fractal dimension analysis and image-based quantitative morphology assessment.
+[![ImageJ](https://img.shields.io/badge/ImageJ-Fiji%20%2F%20ImageJ-blue)](https://imagej.net/)
+[![Macro](https://img.shields.io/badge/Language-ImageJ%20Macro-lightgrey)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-1.0.0-orange)]()
 
-This repository provides a reproducible ImageJ/Fiji workflow for preprocessing images, generating binary and skeletonized outputs, and performing fractal box-counting analysis.
+Automated ImageJ/Fiji macro for fractal dimension analysis and image-based quantitative morphology assessment.
+
+This repository provides a reproducible workflow for preprocessing images, generating binary and skeletonized outputs, and performing fractal box-counting analysis.
 
 ---
 
 ## Overview
 
-Fractal analysis is commonly used to quantify complex structural patterns in biological, medical, and material images.  
-This ImageJ macro was developed to automate repetitive image-processing steps and standardize fractal dimension analysis.
+Fractal analysis is widely used to quantify complex structural patterns in biological, medical, dental, histological, microscopic, and material images.
 
-The workflow can be adapted for different image-based research applications, including trabecular bone analysis, dental radiographs, microscopic images, histological sections, and porous material structures.
+This ImageJ macro was developed to automate repetitive image-processing steps and standardize fractal dimension analysis workflows.
+
+The macro can be adapted for different image-based research applications, including:
+
+- trabecular bone pattern analysis
+- dental and panoramic radiograph analysis
+- microscopic image analysis
+- histological image assessment
+- porous material structure analysis
+- general morphology and texture analysis
 
 ---
 
-## Features
+## Key Features
 
 - Automated image preprocessing
-- ROI-based analysis
+- ROI-based analysis workflow
 - Gaussian blur filtering
 - Background subtraction
 - Contrast enhancement
@@ -26,7 +39,8 @@ The workflow can be adapted for different image-based research applications, inc
 - Binary image generation
 - Skeletonization
 - Fractal dimension analysis using box counting
-- Export of processed images and quantitative results
+- Quantitative morphology assessment
+- Export of processed images and analysis results
 
 ---
 
@@ -48,6 +62,9 @@ fractal-analysis-automation-ImageJ
 │
 ├── publications
 │
+├── CITATION.cff
+├── CHANGELOG.md
+├── CONTRIBUTING.md
 ├── README.md
 └── LICENSE
 
