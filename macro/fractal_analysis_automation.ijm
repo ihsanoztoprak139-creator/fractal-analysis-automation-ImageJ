@@ -44,7 +44,7 @@ output_directory = getDirectory(
 
 // Stop the macro if directory selection is cancelled.
 if (output_directory == "") {
-    exit("The transaction has been cancelled.");
+    exit("Analysis cancelled: No output directory was selected.");
 }
 
 // Retrieve the original image name.
@@ -133,7 +133,8 @@ run("Skeletonize");
 
 // Prepare the binary image for fractal analysis.
 //
-// The Fractal Box Count command analyzes black structures.
+// Invert the binary image to match the foreground convention
+// expected by the Fractal Box Count implementation used in this workflow.
 // Therefore, the binary image must be inverted.
 selectWindow("Fig_D_Original_Binary");
 run("Invert");
@@ -263,7 +264,7 @@ run("Close All");
 print("\\Clear");
 
 print(
-    "Transaction completed. The results were saved to the '" +
+    "Fractal analysis completed. The results were saved to the '" +
     output_directory +
     "' folder."
 );
