@@ -4,6 +4,7 @@
 [![Macro](https://img.shields.io/badge/Language-ImageJ%20Macro-lightgrey)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0.0-orange)]()
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21293918.svg)](https://doi.org/10.5281/zenodo.21293918)
 
 Automated ImageJ/Fiji macro for fractal dimension analysis and image-based quantitative morphology assessment.
 
@@ -126,6 +127,12 @@ This workflow can be adapted for:
 - Microscopy
 - Material science
 - Biological image analysis
+
+---
+
+---
+
+Oztoprak, M. I. (2026). Fractal Analysis Automation for ImageJ (Version v1.0.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.21293918
 
 ---
 
