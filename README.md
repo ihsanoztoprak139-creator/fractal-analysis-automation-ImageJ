@@ -1,14 +1,3 @@
-----------------------------------------------------------
-          Fractal Analysis Automation for ImageJ
-
-Automated • Reproducible • Open Source • Research Software
-
-                [Trabecular Pattern Graphic]
-
-Image Preprocessing • Skeletonization • Box Counting
-----------------------------------------------------------
-
-
 # Fractal Analysis Automation for ImageJ
 
 [![ImageJ](https://img.shields.io/badge/ImageJ-Fiji%20%2F%20ImageJ-blue)](https://imagej.net/)

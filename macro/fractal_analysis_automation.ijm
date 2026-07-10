@@ -1,115 +1,269 @@
-//====================================================================
-//
+//=============================================================================
 // Fractal Analysis Automation for ImageJ
-//
-// Version : 1.0.0
-//
-// Developed by
-// Mehmet Ihsan Oztoprak
-// Department of Bioengineering
-// Marmara University
+// Version: 1.0.0
+// Author: Mehmet Ihsan Oztoprak
+// Department of Bioengineering, Marmara University
 //
 // Description:
-//
-// Fully automated ImageJ macro for fractal dimension analysis
-// and quantitative image preprocessing.
+// Fully automated ImageJ macro for fractal dimension analysis,
+// skeleton analysis, and quantitative image preprocessing.
 //
 // Copyright (c) 2026 Mehmet Ihsan Oztoprak
-//
-//====================================================================
+//=============================================================================
 
-// --- AYARLAR ---
-var sigma_degeri = 4;
-var esikleme_metodu = "Otsu";
 
-// --- KONTROLLER ---
-if (nImages() == 0) { exit("Error: First you need to open an image."); }
-getSelectionBounds(x, y, width, height);
-if (width == 0) { exit("Error: First you need to select an area."); }
+//=============================================================================
+// CONFIGURATION
+//=============================================================================
 
-// --- KAYIT KLASÖRÜ ---
-kayit_klasoru = getDirectory("Select the folder where the results will be saved.");
-if (kayit_klasoru == "") { exit("The transcation has been cancelled."); }
+var sigma_value = 4;
+var threshold_method = "Otsu";
 
-// --- DOSYA ADI ---
-orijinal_isim = getTitle();
-nokta_pozisyonu = lastIndexOf(orijinal_isim, ".");
-if (nokta_pozisyonu != -1) {
-    uzantisiz_isim = substring(orijinal_isim, 0, nokta_pozisyonu);
-} else {
-    uzantisiz_isim = orijinal_isim;
+
+//=============================================================================
+// MAIN WORKFLOW
+//=============================================================================
+
+// Verify that an image is open.
+if (nImages() == 0) {
+    exit("Error: First you need to open an image.");
 }
-temel_isim = uzantisiz_isim + "_ROI_x" + x + "_y" + y;
 
-// --- İŞLEMLER ---
+// Retrieve the selected ROI coordinates and dimensions.
+getSelectionBounds(x, y, width, height);
 
-// Adım A, B, C (Aynı)
+// Verify that an ROI has been selected.
+if (width == 0) {
+    exit("Error: First you need to select an area.");
+}
+
+// Ask the user to select the output directory.
+output_directory = getDirectory(
+    "Select the folder where the results will be saved."
+);
+
+// Stop the macro if directory selection is cancelled.
+if (output_directory == "") {
+    exit("The transaction has been cancelled.");
+}
+
+// Retrieve the original image name.
+original_filename = getTitle();
+
+// Remove the file extension from the original image name.
+dot_position = lastIndexOf(original_filename, ".");
+
+if (dot_position != -1) {
+    filename_without_extension = substring(
+        original_filename,
+        0,
+        dot_position
+    );
+} else {
+    filename_without_extension = original_filename;
+}
+
+// Create a unique base filename using the ROI coordinates.
+base_filename =
+    filename_without_extension +
+    "_ROI_x" + x +
+    "_y" + y;
+
+
+//=============================================================================
+// STEP 1 — ROI PREPARATION
+//=============================================================================
+
+// Duplicate the selected ROI from the original image.
 run("Duplicate...", "title=Fig_A_ROI");
+
+
+//=============================================================================
+// STEP 2 — IMAGE PREPROCESSING
+//=============================================================================
+
+// Create a Gaussian-blurred copy of the ROI.
 selectWindow("Fig_A_ROI");
 run("Duplicate...", "title=Fig_B_Blurred");
-run("Gaussian Blur...", "sigma=" + sigma_degeri);
-imageCalculator("Subtract create 32-bit", "Fig_A_ROI", "Fig_B_Blurred");
+run("Gaussian Blur...", "sigma=" + sigma_value);
+
+// Subtract the blurred image from the original ROI.
+imageCalculator(
+    "Subtract create 32-bit",
+    "Fig_A_ROI",
+    "Fig_B_Blurred"
+);
+
+// Prepare the subtraction result for segmentation.
 selectWindow("Result of Fig_A_ROI");
 run("Add...", "value=128");
 run("Enhance Contrast", "saturated=0.35");
 run("8-bit");
 rename("Fig_C_Subtracted");
 
-// --- HATANIN DÜZELTİLDİĞİ YER ---
 
-// Adım D: İkili (Binary) görüntü oluştur
+//=============================================================================
+// STEP 3 — SEGMENTATION
+//=============================================================================
+
+// Create the initial binary image.
 selectWindow("Fig_C_Subtracted");
-run("Duplicate...", "title=Fig_D_Original_Binary"); // Geçici bir isim veriyoruz
-setAutoThreshold(esikleme_metodu + " dark");
-run("Convert to Mask"); // Bu komut trabekülleri BEYAZ, arka planı SİYAH yapar. Bu, iskeletleştirme için doğru formattır.
+run("Duplicate...", "title=Fig_D_Original_Binary");
 
-// Şimdi Figür D ve Figür E'yi doğru formatlardan oluşturalım.
+// Apply automatic thresholding.
+setAutoThreshold(threshold_method + " dark");
 
-// Adım E: İskeletleştirme (Doğru Görüntü Üzerinde)
+// Convert the thresholded image into a binary mask.
+//
+// This command produces white trabecular structures on a black background,
+// which is the correct format for skeletonization.
+run("Convert to Mask");
+
+
+//=============================================================================
+// STEP 4 — SKELETONIZATION
+//=============================================================================
+
+// Create a skeletonized version of the binary image.
 selectWindow("Fig_D_Original_Binary");
 run("Duplicate...", "title=Fig_E_Skeleton");
-run("Skeletonize"); // Beyaz trabekülleri doğru şekilde iskeletleştirir.
 
-// Adım D: Fraktal Analiz İçin Görüntüyü Hazırla ve Yeniden Adlandır
-// Fraktal analiz siyah yapıları sayar, o yüzden ters çevirmemiz lazım.
+// Skeletonize the white trabecular structures.
+run("Skeletonize");
+
+// Prepare the binary image for fractal analysis.
+//
+// The Fractal Box Count command analyzes black structures.
+// Therefore, the binary image must be inverted.
 selectWindow("Fig_D_Original_Binary");
 run("Invert");
-rename("Fig_D_Binary_for_Fractal"); // Son halinin adını değiştiriyoruz.
+rename("Fig_D_Binary_for_Fractal");
 
-// Adım F: Doğrulama görüntüsü
-// İskelet (beyaz) ile orijinal ROI'yi birleştiriyoruz.
-imageCalculator("Add create", "Fig_A_ROI", "Fig_E_Skeleton");
+// Create a validation overlay by combining the original ROI
+// with the white skeleton image.
+imageCalculator(
+    "Add create",
+    "Fig_A_ROI",
+    "Fig_E_Skeleton"
+);
+
 selectWindow("Result of Fig_A_ROI");
 rename("Fig_F_Overlay");
 
-// --- ANALİZ VE KAYIT ---
 
-// Fraktal Analiz ve Log dosyasını kaydet
-// SİYAH trabeküllü görüntü üzerinde yapılır.
+//=============================================================================
+// STEP 5 — FRACTAL ANALYSIS
+//=============================================================================
+
+// Perform fractal box-counting analysis on the image
+// containing black trabecular structures.
 selectWindow("Fig_D_Binary_for_Fractal");
-run("Fractal Box Count...", "box=2,3,4,6,8,12,16,32,64");
+
+run(
+    "Fractal Box Count...",
+    "box=2,3,4,6,8,12,16,32,64"
+);
+
+// Save the fractal analysis log.
 selectWindow("Log");
-saveAs("Text", kayit_klasoru + temel_isim + "_Fractal_Log.txt");
 
-// İskelet Analizi ve Sonuçları Kaydet (Opsiyonel ama çok faydalı)
+saveAs(
+    "Text",
+    output_directory +
+    base_filename +
+    "_Fractal_Log.txt"
+);
+
+// Perform skeleton analysis.
+//
+// Analyze Skeleton requires a white skeleton on a black background.
+// Therefore, inversion is not required.
 selectWindow("Fig_E_Skeleton");
-// Analyze Skeleton zaten beyaz iskelet ister, bu yüzden Invert yapmaya GEREK YOK.
 run("Analyze Skeleton (2D/3D)");
+
+// Save the skeleton analysis results.
 selectWindow("Results");
-saveAs("Results", kayit_klasoru + temel_isim + "_Skeleton_Results.csv");
+
+saveAs(
+    "Results",
+    output_directory +
+    base_filename +
+    "_Skeleton_Results.csv"
+);
 
 
-// Tüm Figürleri TIFF olarak kaydet
-selectWindow("Fig_A_ROI");                      saveAs("Tiff", kayit_klasoru + temel_isim + "_A.tif");
-selectWindow("Fig_B_Blurred");                  saveAs("Tiff", kayit_klasoru + temel_isim + "_B.tif");
-selectWindow("Fig_C_Subtracted");               saveAs("Tiff", kayit_klasoru + temel_isim + "_C.tif");
-selectWindow("Fig_D_Binary_for_Fractal");       saveAs("Tiff", kayit_klasoru + temel_isim + "_D_Fractal.tif");
-selectWindow("Fig_E_Skeleton");                 saveAs("Tiff", kayit_klasoru + temel_isim + "_E_Skeleton.tif");
-selectWindow("Fig_F_Overlay");                  saveAs("Tiff", kayit_klasoru + temel_isim + "_F_Overlay.tif");
+//=============================================================================
+// STEP 6 — EXPORT RESULTS
+//=============================================================================
 
-// Temizlik
+// Export Figure A: Original ROI.
+selectWindow("Fig_A_ROI");
+
+saveAs(
+    "Tiff",
+    output_directory +
+    base_filename +
+    "_A.tif"
+);
+
+// Export Figure B: Gaussian-blurred ROI.
+selectWindow("Fig_B_Blurred");
+
+saveAs(
+    "Tiff",
+    output_directory +
+    base_filename +
+    "_B.tif"
+);
+
+// Export Figure C: Subtracted and contrast-enhanced image.
+selectWindow("Fig_C_Subtracted");
+
+saveAs(
+    "Tiff",
+    output_directory +
+    base_filename +
+    "_C.tif"
+);
+
+// Export Figure D: Binary image prepared for fractal analysis.
+selectWindow("Fig_D_Binary_for_Fractal");
+
+saveAs(
+    "Tiff",
+    output_directory +
+    base_filename +
+    "_D_Fractal.tif"
+);
+
+// Export Figure E: Skeletonized image.
+selectWindow("Fig_E_Skeleton");
+
+saveAs(
+    "Tiff",
+    output_directory +
+    base_filename +
+    "_E_Skeleton.tif"
+);
+
+// Export Figure F: Validation overlay.
+selectWindow("Fig_F_Overlay");
+
+saveAs(
+    "Tiff",
+    output_directory +
+    base_filename +
+    "_F_Overlay.tif"
+);
+
+// Close all open ImageJ windows.
 run("Close All");
 
-// Sonuç mesajı
+// Clear the Log window and display the completion message.
 print("\\Clear");
-print("Transcation completed. The results were saved to the '" + kayit_klasoru + "' folder");
+
+print(
+    "Transaction completed. The results were saved to the '" +
+    output_directory +
+    "' folder."
+);
