@@ -104,6 +104,18 @@ macro/fractal_analysis_automation.ijm
 
 ---
 
+## Example Processing Pipeline
+
+The figure below illustrates the complete automated image processing workflow implemented in the macro.
+
+<p align="center">
+<img src="images/example_pipeline.png" width="900">
+</p>
+
+**Figure 1.** Representative processing pipeline generated using the Fractal Analysis Automation for ImageJ macro.
+
+---
+
 ## Applications
 
 This workflow can be adapted for:
