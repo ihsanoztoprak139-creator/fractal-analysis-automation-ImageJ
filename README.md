@@ -142,3 +142,5 @@ Marmara University
 ## License
 
 MIT License
+
+Documentation updated for the v1.0.1 maintenance release.
